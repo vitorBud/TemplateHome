@@ -360,6 +360,52 @@ body.light-mode footer {
         margin-top: 0rem;
     }
 
+.projects-screen {
+  padding: 5rem 9%;
+  display: block;
+  background-color: black;
+  color: white;
+  min-height: 100vh;
+}
+.projects-screen.hidden {
+  display: none;
+}
+.projects-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 3rem;
+}
+.projects-screen h2 {
+  font-size: 4rem;
+  color: #1E90FF;
+}
+.project-grid {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.project-card {
+  background: #0f0f0f;
+  border: 1px solid #1E90FF;
+  border-radius: 1rem;
+  padding: 2rem;
+  width: 300px;
+  transition: 0.3s ease;
+}
+.project-card:hover {
+  background-color: #1E90FF;
+  color: black;
+  transform: scale(1.05);
+}
+.project-card h3 {
+  font-size: 2.2rem;
+  margin-bottom: 1rem;
+}
+.project-card p {
+  font-size: 1.5rem;
+}
 
     
 }
