@@ -8,10 +8,10 @@ Portfólio pessoal dinâmico com sistema de autenticação (login e cadastro), a
 
 
 
-1 - git clone https://github.com/seu-usuario/meu-portfolio.git
-2 - python -m venv venv
-3 - Ative o ambiente virtual no CMD => venv\Scripts\activate
-4 - instale as dependências => pip install flask flask-cors
-5 - cd backend
-6 - python app.py
+1 - git clone https://github.com/seu-usuario/meu-portfolio.git <br>
+2 - python -m venv venv <br>
+3 - Ative o ambiente virtual no CMD => venv\Scripts\activate <br>
+4 - instale as dependências => pip install flask flask-cors <br>
+5 - cd backend <br>
+6 - python app.py <br>
 
