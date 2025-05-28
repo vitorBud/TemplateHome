@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Meus Projetos – Vítor</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  <style>
+    .add-project-btn-container {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .btn-add-project, .btn-login {
+      padding: 1rem 2.5rem;
+      background-color: #1E90FF;
+      color: white;
+      font-size: 1.6rem;
+      border-radius: 4rem;
+      font-weight: bold;
+      text-decoration: none;
+      margin: 0.5rem;
+      transition: 0.3s ease;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-add-project:hover,
+    .btn-login:hover {
+      background-color: white;
+      color: #1E90FF;
+      border: 2px solid #1E90FF;
+      box-shadow: 0 0 15px #1E90FF;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: rgba(0, 0, 0, 0.7);
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+    }
+
+    .modal-content {
+      background: white;
+      padding: 2rem;
+      border-radius: 1rem;
+      max-width: 500px;
+      width: 90%;
+    }
+
+    .modal-content input {
+      width: 100%;
+      padding: 1rem;
+      margin: 0.5rem 0;
+      font-size: 1rem;
+    }
+
+    .modal-content button {
+      background-color: #1E90FF;
+      color: white;
+      border: none;
+      padding: 0.8rem 2rem;
+      margin-top: 1rem;
+      font-size: 1rem;
+      cursor: pointer;
+      border-radius: 0.5rem;
+    }
+
+    .modal-content button:hover {
+      background-color: #155fbd;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <a href="index.html" class="logo">Vítor</a>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="projetos.html" class="active">Projetos</a>
+      <a href="skills.html">Skills</a>
+      <a href="contato.html">Contato</a>
+    </nav>
+  </header>
+
+  <section class="projects">
+    <h2>Meus Projetos</h2>
+
+    <div class="add-project-btn-container">
+      <button class="btn-add-project" onclick="handleAddClick()">+ Novo Projeto</button>
+      <a class="btn-login" href="login.html">Login</a>
+    </div>
+
+    <div class="project-grid" id="grid-projetos"></div>
+  </section>
+
+  <div class="modal" id="modal">
+    <div class="modal-content">
+      <h3>Adicionar Projeto</h3>
+      <input type="text" id="titulo" placeholder="Título">
+      <input type="text" id="descricao" placeholder="Descrição">
+      <input type="text" id="imagem" placeholder="URL da Imagem">
+      <input type="text" id="link" placeholder="Link do Projeto">
+      <button onclick="adicionarProjeto()">Salvar</button>
+    </div>
+  </div>
+
+  <!-- Modal de edição -->
+  <div class="modal" id="editModal">
+    <div class="modal-content">
+      <h3>Editar Projeto</h3>
+      <input type="hidden" id="edit-id">
+      <input type="text" id="edit-titulo" placeholder="Título">
+      <input type="text" id="edit-descricao" placeholder="Descrição">
+      <input type="text" id="edit-imagem" placeholder="URL da Imagem">
+      <input type="text" id="edit-link" placeholder="Link do Projeto">
+      <button onclick="salvarEdicao()">Salvar Edição</button>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 Vítor. Todos os direitos reservados.</p>
+  </footer>
+
+  <!-- SCRIPT AQUI NO FINAL DO BODY -->
+  <script>
+    function isUserLoggedIn() {
+      return localStorage.getItem("isLoggedIn") === "true";
+    }
+
+    function handleAddClick() {
+      if (!isUserLoggedIn()) {
+        alert("Você precisa fazer login para adicionar um projeto.");
+      } else {
+        document.getElementById("modal").style.display = "flex";
+      }
+    }
+
+    function adicionarProjeto() {
+      const titulo = document.getElementById("titulo").value;
+      const descricao = document.getElementById("descricao").value;
+      const imagem = document.getElementById("imagem").value;
+      const link = document.getElementById("link").value;
+
+      fetch('/api/projetos', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ titulo, descricao, imagem, link })
+      })
+      .then(response => response.json())
+      .then(() => {
+        alert("Projeto adicionado com sucesso!");
+        location.reload();
+      })
+      .catch(error => console.error("Erro ao adicionar projeto:", error));
+    }
+
+    function salvarEdicao() {
+      const id = document.getElementById("edit-id").value;
+      const titulo = document.getElementById("edit-titulo").value;
+      const descricao = document.getElementById("edit-descricao").value;
+      const imagem = document.getElementById("edit-imagem").value;
+      const link = document.getElementById("edit-link").value;
+
+      fetch(`/api/projetos/${id}`, {
+        method: "PUT",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ titulo, descricao, imagem, link })
+      })
+      .then(res => res.json())
+      .then(() => {
+        alert("Projeto atualizado com sucesso!");
+        location.reload();
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const container = document.getElementById("grid-projetos");
+
+      const projetosFixos = [
+        {
+          titulo: "To-Do App",
+          descricao: "Gerenciador de tarefas com React + TS.",
+          imagem: "images/trabalho2.png",
+          link: "https://github.com/vitorBud/Mylist-bloco-de-notas"
+        },
+        {
+          titulo: "Landing Page",
+          descricao: "Landing Page moderno e responsivo.",
+          imagem: "images/trabalho3.png",
+          link: "https://github.com/vitorBud/LANDING-PAGE-"
+        },
+        {
+          titulo: "Beba-Água",
+          descricao: "Site que mede a quantidade de água diária.",
+          imagem: "images/trabalho4.png",
+          link: "https://github.com/vitorBud/Beba-Agua"
+        },
+        {
+          titulo: "Login Page",
+          descricao: "Tela de login estilizada com validação.",
+          imagem: "images/trabalho1.png",
+          link: "https://github.com/vitorBud/LoginPage"
+        }
+      ];
+
+      projetosFixos.forEach(projeto => {
+        const card = document.createElement("a");
+        card.className = "project-card";
+        card.href = projeto.link;
+        card.target = "_blank";
+        card.innerHTML = `
+          <img src="${projeto.imagem}" alt="${projeto.titulo}" />
+          <h3>${projeto.titulo}</h3>
+          <p>${projeto.descricao}</p>
+        `;
+        container.appendChild(card);
+      });
+
+      fetch("/api/projetos")
+        .then(response => response.json())
+        .then(data => {
+          data.forEach(projeto => {
+            const wrapper = document.createElement("div");
+            wrapper.className = "project-card";
+
+            wrapper.innerHTML = `
+              <a href="${projeto.link}" target="_blank">
+                <img src="${projeto.imagem}" alt="${projeto.titulo}" />
+                <h3>${projeto.titulo}</h3>
+                <p>${projeto.descricao}</p>
+              </a>
+            `;
+
+            if (isUserLoggedIn()) {
+              const btnGroup = document.createElement("div");
+              btnGroup.style.marginTop = "10px";
+
+              const deleteBtn = document.createElement("button");
+              deleteBtn.textContent = "Excluir";
+              deleteBtn.style.marginRight = "1rem";
+              deleteBtn.style.backgroundColor = "crimson";
+              deleteBtn.style.color = "white";
+              deleteBtn.style.border = "none";
+              deleteBtn.style.padding = "0.5rem 1rem";
+              deleteBtn.style.borderRadius = "0.5rem";
+              deleteBtn.onclick = () => {
+                if (confirm("Tem certeza que deseja excluir este projeto?")) {
+                  fetch(`/api/projetos/${projeto.id}`, {
+                    method: "DELETE"
+                  })
+                  .then(res => res.json())
+                  .then(() => {
+                    alert("Projeto removido!");
+                    wrapper.remove();
+                  });
+                }
+              };
+
+              const editBtn = document.createElement("button");
+              editBtn.textContent = "Editar";
+              editBtn.style.backgroundColor = "orange";
+              editBtn.style.color = "white";
+              editBtn.style.border = "none";
+              editBtn.style.padding = "0.5rem 1rem";
+              editBtn.style.borderRadius = "0.5rem";
+              editBtn.onclick = () => {
+                document.getElementById("edit-id").value = projeto.id;
+                document.getElementById("edit-titulo").value = projeto.titulo;
+                document.getElementById("edit-descricao").value = projeto.descricao;
+                document.getElementById("edit-imagem").value = projeto.imagem;
+                document.getElementById("edit-link").value = projeto.link;
+                document.getElementById("editModal").style.display = "flex";
+              };
+
+              btnGroup.appendChild(editBtn);
+              btnGroup.appendChild(deleteBtn);
+              wrapper.appendChild(btnGroup);
+            }
+
+            container.appendChild(wrapper);
+          });
+        })
+        .catch(error => console.error("Erro ao carregar projetos:", error));
+    });
+  </script>
+
+</body>
+</html>

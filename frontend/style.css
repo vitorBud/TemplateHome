@@ -511,6 +511,13 @@ body.light-mode .project-card {
  
 }
 
+.project-card button:hover {
+  background-color: darkred;
+  cursor: pointer;
+}
+
+
+
 @media (max-width: 900px) {
   .contato-hero {
     flex-direction: column;
