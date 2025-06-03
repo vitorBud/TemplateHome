@@ -90,10 +90,12 @@
   <section class="projects">
     <h2>Meus Projetos</h2>
 
-    <div class="add-project-btn-container">
-      <button class="btn-add-project" onclick="handleAddClick()">+ Novo Projeto</button>
-      <a class="btn-login" href="login.html">Login</a>
-    </div>
+   <div class="add-project-btn-container">
+  <button class="btn-add-project" onclick="handleAddClick()">+ Novo Projeto</button>
+  <a class="btn-login" href="login.html">Login</a>
+  <button class="btn-login" onclick="handleLogout()">Logout</button>
+</div>
+
 
     <div class="project-grid" id="grid-projetos"></div>
   </section>
@@ -287,6 +289,14 @@
         })
         .catch(error => console.error("Erro ao carregar projetos:", error));
     });
+
+
+    function handleLogout() {
+  localStorage.removeItem("isLoggedIn");
+  alert("Você foi deslogado.");
+  location.reload();
+}
+
   </script>
 
 </body>
