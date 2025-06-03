@@ -13,5 +13,6 @@ Portfólio pessoal dinâmico com sistema de autenticação (login e cadastro), a
 3 - Ative o ambiente virtual no CMD => venv\Scripts\activate <br>
 4 - instale as dependências => pip install flask flask-cors <br>
 5 - cd backend <br>
-6 - python app.py <br>
+6 - python app.py <br>pyton app.py
+
 

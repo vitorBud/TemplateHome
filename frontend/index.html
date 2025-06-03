@@ -11,6 +11,14 @@
     html {
       scroll-behavior: smooth;
     }
+
+    @media (max-width: 768px) {
+      .menu-icon {
+        position: absolute;
+        right: 2rem;
+        top: 1.5rem;
+      }
+    }
   </style>
 </head>
 
@@ -23,6 +31,9 @@
       <a href="skills.html">Skills</a>  
       <a href="contato.html">Contato</a>
     </nav>
+    <div class="menu-icon" onclick="toggleMenu()">
+      <i class="fas fa-bars"></i>
+    </div>
   </header>
 
   <section class="home">
@@ -42,17 +53,20 @@
     </div>
   </section>
 
-
-
-
-
-  <!-- RODAPÉ -->
   <footer>
     <p>&copy; 2025 Vítor. Todos os direitos reservados.</p>
   </footer>
 
-  <!-- JAVASCRIPT -->
   <script>
+    function toggleDarkMode() {
+      document.body.classList.toggle("light-mode");
+    }
+
+    function toggleMenu() {
+      const nav = document.querySelector("header nav");
+      nav.classList.toggle("active");
+    }
+
     const typedTextSpan = document.querySelector(".typing-text span");
     const words = ["Web Developer", "Full Stack Developer", "Web Designer"];
     let wordIndex = 0;
@@ -80,12 +94,12 @@
     }
 
     document.addEventListener("DOMContentLoaded", () => {
-      setTimeout(type, 1000);
+      if (window.innerWidth > 768) {
+        setTimeout(type, 1000);
+      } else {
+        typedTextSpan.textContent = "Web Developer";
+      }
     });
-
-    function toggleDarkMode() {
-      document.body.classList.toggle("light-mode");
-    }
   </script>
 </body>
 </html>
